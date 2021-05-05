@@ -23,7 +23,7 @@ const createUserAccount=(body)=>{
     return new Promise(function(resolve, reject){
         console.log(body)
         const {id, email, password}=body
-        sqlQuery=`INSERT INTO account(id, email, password) VALUES (${id},'${email}', '${password}')`
+        sqlQuery=`INSERT INTO account(email, password) VALUES ('${email}', '${password}')`
         console.log(sqlQuery)
         pool.query(sqlQuery, (error, results)=>{
             if(error)
@@ -56,8 +56,8 @@ const getUserTodo=(user_id)=>{
 
 const createUserTodo=(body)=>{
     return new Promise(function(resolve, reject){
-        const {id, summary, status, acc_id}=body
-        sqlQuery=`INSERT INTO task(id, summary, status, acc_id) VALUES (${id}, '${summary}', ${status}, ${acc_id})`
+        const {summary, status, acc_id}=body
+        sqlQuery=`INSERT INTO task(summary, status, acc_id) VALUES ( '${summary}', ${status}, ${acc_id})`
         pool.query(sqlQuery, (error, results)=>{
             if(error)
             {
