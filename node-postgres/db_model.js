@@ -84,8 +84,9 @@ const deleteUserTodo=(task_id)=>{
 }
 const updateUserTodo=(body)=>{
     return new Promise(function(resolve, reject){
-        const {id, summary, status}=body
-        sqlQuery=`UPDATE task SET summary = ${summary}, status = ${status} WHERE id=${id}`
+        const { id, summary, status}=body
+        sqlQuery=`UPDATE task SET summary = '${summary}', status = ${status} WHERE id=${id}`
+        console.log(sqlQuery)
         pool.query(sqlQuery, (error, results)=>{
             if(error)
             {

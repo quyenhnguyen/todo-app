@@ -73,7 +73,9 @@ app.delete('/tasks/:task_id', (req, res) => {
 
 //update 1 toto of todo list
 app.put('/tasks/:task_id', (req, res) => {
-    db_model.createMerchant(req.body)
+    req.body.id=req.params.task_id
+    db_model.updateUserTodo(req.body)
+
     .then(response => {
         res.status(200).send(response);
     })
