@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Component } from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 import { withRouter } from 'react-router-dom'
 
@@ -75,7 +75,26 @@ class CustomForm extends Component {
     })
   }
 
-  handleLoginSubmit(e) {}
+  handleLoginSubmit(e) {
+    let password = this.state.password
+    let email = this.state.email
+
+    fetch('http://localhost:3001/userinfo/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    }).then((response) => {
+      response.json().then((data) => {
+        this.props.history.push({
+          pathname: '/home',
+          state: { id: data.id },
+        })
+      })
+    })
+    e.preventDefault()
+  }
 
   handleSignupSubmit = (e) => {
     let password = this.state.password
@@ -88,12 +107,11 @@ class CustomForm extends Component {
       },
       body: JSON.stringify({ email, password }),
     }).then((response) => {
-      return response.json().then((data) => {
+      response.json().then((data) => {
         this.props.history.push({
           pathname: '/home',
           state: { id: data.id },
         })
-        console.log(data) //lay dc id của user
       })
     })
 
