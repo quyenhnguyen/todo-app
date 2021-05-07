@@ -1,14 +1,76 @@
-import logo from './logo.svg';
-import './App.css';
-import React, {Component} from 'react'
-import CustomForm from './Components/CustomForm';
+import './App.css'
+import React, { Component } from 'react'
+import CustomForm from './Components/CustomForm'
+import Home from './Components/Home'
 
-class  App  extends Component{
-  render(){
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+
+class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      isLoggedIn: true,
+      isSignUp: false,
+    }
+    this.handleSignupSubmit = this.handleSignupSubmit.bind(this)
+  }
+
+  handleSignupSubmit = (e) => {
+    let password = this.state.password
+    let email = this.state.email
+
+    fetch('http://localhost:3001/users/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    }).then((response) => {
+      return response.json().then((data) => {
+        console.log(data) //lay dc id của user
+      })
+    })
+
+    e.preventDefault()
+  }
+
+  render() {
     return (
-      <CustomForm name="Login"></CustomForm>
-        );
+      <Router>
+        <div>
+          <Route path="/home">
+            <Home></Home>
+          </Route>
+          <Route path="/login">
+            <CustomForm name="Login"></CustomForm>
+          </Route>
+          <Route path="/signup">
+            <CustomForm name="Sign up"></CustomForm>
+          </Route>
+        </div>
+      </Router>
+
+      // <div>
+      //   {this.state.isLoggedIn ? (
+      //     <div>Show todo list</div>
+      //   ) : (
+      //     <div>
+      //       {this.state.isSignUp ? (
+      //         <CustomForm
+      //           name="Login"
+      //           subButton={this.showSignUpForm}
+      //         ></CustomForm>
+      //       ) : (
+      //         <CustomForm
+      //           name="Sign up"
+      //           subButton={this.showLoginForm}
+      //         ></CustomForm>
+      //       )}
+      //     </div>
+      //   )}
+      // </div>
+    )
   }
 }
 
-export default App;
+export default App
