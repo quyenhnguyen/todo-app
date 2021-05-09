@@ -42,9 +42,20 @@ app.post('/users', (req, res) => {
     })
 })
 
+//create new user
+app.post('/userinfo', (req, res) => {
+  db_model
+    .getUserInfo(req.body)
+    .then((response) => {
+      res.status(200).send(response)
+    })
+    .catch((error) => {
+      res.status(500).send(error)
+    })
+})
+
 //get all todo of 1 user
 app.get('/users/:id/tasks', (req, res) => {
-  console.log(req.params.id)
   db_model
     .getUserTodo(req.params.id)
     .then((response) => {

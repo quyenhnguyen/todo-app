@@ -86,6 +86,7 @@ class CustomForm extends Component {
       },
       body: JSON.stringify({ email, password }),
     }).then((response) => {
+      console.log(response)
       response.json().then((data) => {
         this.props.history.push({
           pathname: '/home',

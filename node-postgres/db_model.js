@@ -23,13 +23,13 @@ const getUserInfo = (body) => {
   return new Promise(function (resolve, reject) {
     const { email, password } = body
     sqlQuery = `SELECT * FROM account where email ='${email}' and password='${password}'`
-    console.log('user info: ', sqlQuery)
 
     pool.query(sqlQuery, (error, results) => {
       if (error) {
         reject(error)
       }
-      resolve(results.rows[0])
+      if (results.rows.length > 0) resolve(results.rows[0])
+      resolve({})
     })
   })
 }
@@ -55,7 +55,6 @@ const getUserTodo = (user_id) => {
   return new Promise(function (resolve, reject) {
     const id = parseInt(user_id)
     sqlQuery = `SELECT * FROM task WHERE acc_id=${id}`
-    console.log(sqlQuery)
     pool.query(sqlQuery, (error, results) => {
       if (error) {
         reject(error)
@@ -67,8 +66,8 @@ const getUserTodo = (user_id) => {
 
 const createUserTodo = (body) => {
   return new Promise(function (resolve, reject) {
-    const { summary, status, acc_id } = body
-    sqlQuery = `INSERT INTO task(summary, status, acc_id) VALUES ( '${summary}', ${status}, ${acc_id})`
+    const { summary, acc_id } = body
+    sqlQuery = `INSERT INTO task(summary, acc_id) VALUES ( '${summary}',  ${acc_id})`
     pool.query(sqlQuery, (error, results) => {
       if (error) {
         reject(error)
@@ -93,7 +92,6 @@ const updateUserTodo = (body) => {
   return new Promise(function (resolve, reject) {
     const { id, summary, status } = body
     sqlQuery = `UPDATE task SET summary = '${summary}', status = ${status} WHERE id=${id}`
-    console.log(sqlQuery)
     pool.query(sqlQuery, (error, results) => {
       if (error) {
         reject(error)

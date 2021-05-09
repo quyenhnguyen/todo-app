@@ -26,9 +26,7 @@ class App extends Component {
       },
       body: JSON.stringify({ email, password }),
     }).then((response) => {
-      return response.json().then((data) => {
-        console.log(data) //lay dc id của user
-      })
+      return response.json().then((data) => {})
     })
 
     e.preventDefault()
@@ -38,6 +36,7 @@ class App extends Component {
     return (
       <Router>
         <div>
+          <Route path="/" exact component={Home}></Route>
           <Route path="/home">
             <Home></Home>
           </Route>
