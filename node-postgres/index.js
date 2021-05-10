@@ -1,8 +1,9 @@
-//tuong tac voi request de lay tham so truyen vao db, de query
 const { response } = require('express')
 const express = require('express')
 const app = express()
 const port = 3001
+
+const dotenv = require('dotenv').config()
 
 const db_model = require('./db_model')
 app.use(express.json())
@@ -42,7 +43,7 @@ app.post('/users', (req, res) => {
     })
 })
 
-//create new user
+//login
 app.post('/userinfo', (req, res) => {
   db_model
     .getUserInfo(req.body)
