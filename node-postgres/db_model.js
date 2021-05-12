@@ -28,8 +28,8 @@ const getUserInfo = (body) => {
       if (error) {
         reject(error)
       }
-      if (results.rows.length > 0) resolve(results.rows[0])
-      resolve({})
+      if (results.rowCount > 0) resolve(results.rows[0])
+      else resolve({ failure: 'Can not find user.' })
     })
   })
 }
@@ -39,14 +39,14 @@ const createUserAccount = (body) => {
 
   return new Promise(function (resolve, reject) {
     const { email, password } = body
-    sqlQuery = `INSERT INTO account(email, password) VALUES ('${email}', '${password}')`
+    sqlQuery = `INSERT INTO account(email, password) VALUES ('${email}', '${password}')RETURNING *`
     pool.query(sqlQuery, (error, results) => {
       if (error) {
         console.log(error)
         reject(error)
       }
-      row = getUserInfo(body)
-      resolve(row)
+
+      resolve(results.rows[0])
     })
   })
 }
@@ -67,12 +67,12 @@ const getUserTodo = (user_id) => {
 const createUserTodo = (body) => {
   return new Promise(function (resolve, reject) {
     const { summary, acc_id } = body
-    sqlQuery = `INSERT INTO task(summary, acc_id) VALUES ( '${summary}',  ${acc_id})`
+    sqlQuery = `INSERT INTO task(summary, acc_id) VALUES ( '${summary}',  ${acc_id})RETURNING *`
     pool.query(sqlQuery, (error, results) => {
       if (error) {
         reject(error)
       }
-      resolve(`A new to do have been added to user ${acc_id}`)
+      resolve(results.rows[0])
     })
   })
 }
@@ -84,7 +84,7 @@ const deleteUserTodo = (task_id) => {
       if (error) {
         reject(error)
       }
-      resolve(`Successfull`)
+      resolve(`Successful`)
     })
   })
 }
@@ -96,7 +96,7 @@ const updateUserTodo = (body) => {
       if (error) {
         reject(error)
       }
-      resolve(`Successfull`)
+      resolve(`Successful`)
     })
   })
 }

@@ -10,11 +10,6 @@ const Input = styled.input`
 class TaskList extends Component {
   constructor(props) {
     super(props)
-    this.handleStatusClick = this.handleStatusClick.bind(this)
-  }
-
-  handleStatusClick(index) {
-    this.props.handleStatusTaskItemClick(index)
   }
 
   handleChange = (event) => {

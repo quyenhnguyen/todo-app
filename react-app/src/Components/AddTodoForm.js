@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import { addNewTodo } from '../services/todoService'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
 const Button = styled.button`
   background-color: #fa841c;
@@ -28,6 +31,7 @@ class AddTodoForm extends Component {
     }
     this.handleAddTodo = this.handleAddTodo.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.onClear = this.onClear.bind(this)
   }
 
   handleChange = (event) => {
@@ -36,18 +40,14 @@ class AddTodoForm extends Component {
   handleAddTodo = (e) => {
     let summary = this.state.newTodoSummary
     let acc_id = this.props.userId
-
-    fetch('http://localhost:3001/tasks/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ summary, acc_id }),
-    }).then((response) => {
-      return response
-    })
-
+    console.log(acc_id)
+    this.props.addNewTodo(summary, acc_id)
     e.preventDefault()
+    this.onClear()
+  }
+
+  onClear() {
+    this.setState({ newTodoSummary: '' })
   }
   render() {
     return (
@@ -67,5 +67,14 @@ class AddTodoForm extends Component {
     )
   }
 }
-
-export default AddTodoForm
+function mapStateToProps(state) {
+  return {}
+}
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      addNewTodo: addNewTodo,
+    },
+    dispatch
+  )
+export default connect(mapStateToProps, mapDispatchToProps)(AddTodoForm)

@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { editTodo } from '../services/todoService'
 
 const Input = styled.input`
   -webkit-text-decoration-line: line-through; /* Safari */
@@ -14,6 +17,11 @@ class TaskItem extends Component {
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value })
   }
+  handleStatusClick = (task) => {
+    task.status = !task.status
+    //task.summary = this.state.summary
+    this.props.editTodo(task)
+  }
 
   render() {
     return (
@@ -22,13 +30,13 @@ class TaskItem extends Component {
           {this.props.task.status === false ? (
             <input
               value={this.props.task.summary}
-              name="{index}"
+              name="summary"
               onChange={this.handleChange}
             ></input>
           ) : (
             <Input
               value={this.props.task.summary}
-              name="{index}"
+              name="summary"
               onChange={this.handleChange}
             ></Input>
           )}
@@ -38,12 +46,21 @@ class TaskItem extends Component {
             name="vehicle1"
             value="Bike"
             checked={this.props.task.status === true}
-            onChange={() => this.props.handleStatusClick(this.props.index)}
+            onChange={() => this.handleStatusClick(this.props.task)}
           />
         </div>
       </div>
     )
   }
 }
-
-export default TaskItem
+function mapStateToProps(state) {
+  return {}
+}
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      editTodo: editTodo,
+    },
+    dispatch
+  )
+export default connect(mapStateToProps, mapDispatchToProps)(TaskItem)

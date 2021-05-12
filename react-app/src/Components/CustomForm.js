@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { login, register } from '../services/userService'
 
 const Form = styled.form`
   border: 3px solid #f1f1f1;
@@ -56,67 +59,30 @@ class CustomForm extends Component {
       email: '',
       password: '',
     }
-    this.handleSignupSubmit = this.handleSignupSubmit.bind(this)
-    this.handleLoginSubmit = this.handleLoginSubmit.bind(this)
-    this.fetchData = this.fetchData.bind(this)
   }
 
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value })
   }
 
-  fetchData() {
-    fetch('http://localhost:3001/users/', {
-      method: 'GET',
-    }).then((response) => {
-      return response.json().then((data) => {
-        console.log(data) //
-      })
-    })
-  }
-
-  handleLoginSubmit(e) {
+  handleLoginSubmit = (e) => {
     let password = this.state.password
     let email = this.state.email
-
-    fetch('http://localhost:3001/userinfo/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    }).then((response) => {
-      console.log(response)
-      response.json().then((data) => {
-        this.props.history.push({
-          pathname: '/home',
-          state: { id: data.id },
-        })
-      })
-    })
     e.preventDefault()
+
+    const { from } = this.props.location.state || {
+      from: { pathname: '/home' },
+    }
+
+    this.props.login(email, password, from)
   }
 
   handleSignupSubmit = (e) => {
     let password = this.state.password
     let email = this.state.email
-
-    fetch('http://localhost:3001/users/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    }).then((response) => {
-      response.json().then((data) => {
-        this.props.history.push({
-          pathname: '/home',
-          state: { id: data.id },
-        })
-      })
-    })
-
     e.preventDefault()
+
+    this.props.register(password, email)
   }
 
   render() {
@@ -172,11 +138,25 @@ class CustomForm extends Component {
             <a href={this.props.name === 'Login' ? 'signup' : '/login'}>
               {this.props.name === 'Login' ? 'SIGN UP?' : 'LOGIN'}
             </a>
-            <button onClick={this.fetchData}>Fetch</button>
           </ContainerForgotPws>
         </Form>
       </FormContainer>
     )
   }
 }
-export default withRouter(CustomForm)
+
+function mapStateToProps(state) {
+  return {}
+}
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      login: login,
+      register: register,
+    },
+    dispatch
+  )
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(CustomForm))

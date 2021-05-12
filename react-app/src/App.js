@@ -48,26 +48,6 @@ class App extends Component {
           </Route>
         </div>
       </Router>
-
-      // <div>
-      //   {this.state.isLoggedIn ? (
-      //     <div>Show todo list</div>
-      //   ) : (
-      //     <div>
-      //       {this.state.isSignUp ? (
-      //         <CustomForm
-      //           name="Login"
-      //           subButton={this.showSignUpForm}
-      //         ></CustomForm>
-      //       ) : (
-      //         <CustomForm
-      //           name="Sign up"
-      //           subButton={this.showLoginForm}
-      //         ></CustomForm>
-      //       )}
-      //     </div>
-      //   )}
-      // </div>
     )
   }
 }
