@@ -1,5 +1,9 @@
-import { loginSuccess, registerSuccess } from '../actions/UserAction'
-import { browserHistory } from '../helpers/history'
+import {
+  loginFailure,
+  loginSuccess,
+  registerSuccess,
+} from '../actions/UserAction'
+import { history } from '../helpers/history'
 function login(email, password, from) {
   return (dispatch) => {
     fetch('http://localhost:3001/userinfo/', {
@@ -11,13 +15,12 @@ function login(email, password, from) {
     }).then((response) => {
       response.json().then((data) => {
         if (data.failure) {
-          console.log('login fail')
-          /////show msg login fail
+          dispatch(loginFailure(data.failure))
         } else {
           localStorage.setItem('user', JSON.stringify(data))
 
           dispatch(loginSuccess(data))
-          browserHistory.push(from)
+          history.push(from)
         }
       })
     })
@@ -37,7 +40,7 @@ function register(email, password) {
         localStorage.setItem('user', JSON.stringify(data))
         dispatch(registerSuccess(data))
 
-        browserHistory.push({
+        history.push({
           pathname: '/home',
         })
       })

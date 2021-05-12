@@ -10,7 +10,10 @@ var loginReducer = (state = initialState, action) => {
         user: action.user,
       }
     case types.LOGIN_FAILURE:
-      return {}
+      return {
+        ...state,
+        failMsg: 'Login fail',
+      }
     default:
       return state
   }

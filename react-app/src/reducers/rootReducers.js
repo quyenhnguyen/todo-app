@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux'
 import todosReducers from './todosReducers'
-import loginReducers from './loginReducer'
+import loginReducer from './loginReducer'
 import registerReducer from './registerReducer'
 
 const rootReducer = combineReducers({
   todosReducers,
-  loginReducers,
+  loginReducer,
   registerReducer,
 })
 

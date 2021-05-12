@@ -8,6 +8,9 @@ import { login, register } from '../services/userService'
 const Form = styled.form`
   border: 3px solid #f1f1f1;
 `
+const TextDanger = styled.span`
+  color: red;
+`
 const Input = styled.input`
   width: 100%;
   padding: 12px 20px;
@@ -85,6 +88,10 @@ class CustomForm extends Component {
     this.props.register(password, email)
   }
 
+  componentWillUnmount() {
+    localStorage.clear()
+  }
+
   render() {
     return (
       <FormContainer>
@@ -125,7 +132,13 @@ class CustomForm extends Component {
                 required
               />
             </Field>
+
             <Wrapper>
+              <TextDanger>
+                {!this.props.loginInfo.failMsg
+                  ? ''
+                  : 'Invalid email or password'}
+              </TextDanger>
               <ButtonSubmit type="submit">{this.props.name}</ButtonSubmit>
             </Wrapper>
           </Container>
@@ -146,7 +159,9 @@ class CustomForm extends Component {
 }
 
 function mapStateToProps(state) {
-  return {}
+  return {
+    loginInfo: state.loginReducer,
+  }
 }
 const mapDispatchToProps = (dispatch) =>
   bindActionCreators(
