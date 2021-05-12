@@ -28,7 +28,7 @@ class Home extends React.Component {
     } else {
       //if user dont have an account then redirect to sign up
       this.props.history.push({
-        pathname: '/signup',
+        pathname: '/login',
       })
     }
   }

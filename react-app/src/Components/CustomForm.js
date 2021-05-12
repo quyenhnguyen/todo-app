@@ -83,9 +83,9 @@ class CustomForm extends Component {
   handleSignupSubmit = (e) => {
     let password = this.state.password
     let email = this.state.email
-    e.preventDefault()
 
-    this.props.register(password, email)
+    e.preventDefault()
+    this.props.register(email, password)
   }
 
   componentWillUnmount() {

@@ -22,21 +22,22 @@ const getAllUserAccount = () => {
 const getUserInfo = (body) => {
   return new Promise(function (resolve, reject) {
     const { email, password } = body
-    sqlQuery = `SELECT * FROM account where email ='${email}' and password='${password}'`
+    sqlQuery = `SELECT * FROM account where email ='${email}'`
 
     pool.query(sqlQuery, (error, results) => {
       if (error) {
         reject(error)
       }
-      if (results.rowCount > 0) resolve(results.rows[0])
-      else resolve({ failure: 'Can not find user.' })
+      if (results.rowCount > 0) {
+        resolve(results.rows[0])
+      } else {
+        resolve({ failure: 'Can not find user.' })
+      }
     })
   })
 }
 
 const createUserAccount = (body) => {
-  rows = getUserInfo(body)
-
   return new Promise(function (resolve, reject) {
     const { email, password } = body
     sqlQuery = `INSERT INTO account(email, password) VALUES ('${email}', '${password}')RETURNING *`
@@ -45,7 +46,6 @@ const createUserAccount = (body) => {
         console.log(error)
         reject(error)
       }
-
       resolve(results.rows[0])
     })
   })
